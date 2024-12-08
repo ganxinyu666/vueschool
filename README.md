@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 campus-showcase-front/
 
 ├── public/            # 静态资源文件夹 (不经过 webpack 处理)
@@ -185,3 +186,7 @@ campus-showcase-front/
 ├── package-lock.json
 
 └── README.md           # 项目说明文档
+=======
+# vuexiaoyuan
+基于vue的校园页面展示页面
+>>>>>>> 39b0cd0ab8564d6afa0202e32d939a9963140215
