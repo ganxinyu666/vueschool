@@ -1,0 +1,78 @@
+#当提交被推送到默认分支时，这个工作流将构建node.js应用程序并推送到Azure Web应用程序。
+#
+#这个工作流假设您已经创建了目标Azure App Service web App。
+#有关说明，请参阅https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-cli
+#
+#配置此工作流：
+#
+#1。下载Azure Web应用程序的发布概要文件。您可以从Azure门户中Web应用程序的Overview页面下载该文件。
+#了解更多信息：https://docs.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel#generate-deployment-credentials
+#
+#2。在存储库中创建一个名为AZURE_WEBAPP_PUBLISH_PROFILE的secret，将PUBLISH PROFILE内容粘贴为secret的值。
+#有关获取发布概要文件的说明，请参阅：https://docs.microsoft.com/azure/app-service/deploy-github-actions#configure-the-github-secret
+#
+#3。更改AZURE_WEBAPP_NAME的值。还可以更改AZURE_WEBAPP_PACKAGE_PATH和NODE_VERSION环境变量。
+#
+#有关Azure的GitHub操作的更多信息：https://GitHub.com/Azure/Actions
+#有关Azure Web Apps部署操作的更多信息：https://github.com/Azure/webapps-Deploy
+#了解更多示例以开始GitHub Action工作流部署到Azure：https://GitHub.com/Azure/actions-workflow-samples
+
+在:
+推:
+分支: [ "main" ]
+query为空workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: your-app-name    #将其设置为应用程序的名称
+  AZURE_WEBAPP_PACKAGE_PATH: '.'      #将其设置为web app项目的路径，默认为存储库根目录
+  NODE_VERSION: '20.x'                #将其设置为要使用的节点版本
+
+权限:
+内容: 阅读
+
+工作:
+建筑:
+    runs-on: ubuntu-latest
+步骤:
+    - uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: npm install, build, and test
+      run: |
+        npm install
+        npm run build --if-present
+        npm run test --if-present
+
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v3
+      with:
+        name: node-app
+        path: .
+
+  deploy:
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Development'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: node-app
+
+    - name: 'Deploy to Azure WebApp'
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
