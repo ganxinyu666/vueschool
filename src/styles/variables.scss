@@ -1,0 +1,43 @@
+:root {
+  --primary-color: #7c4dff;
+  --primary-light: #b388ff;
+  --background-color: #f8f5ff;
+  --text-color: #333333;
+  --text-secondary: #666666;
+  --surface-color: #ffffff;
+  --border-color: #e0d3ff;
+  --shadow-color: rgba(124, 77, 255, 0.1);
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  @media screen and (max-width: 768px) {
+    --spacing-md: 12px;
+    --spacing-lg: 20px;
+    --spacing-xl: 24px;
+  }
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.card {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    border-radius: 12px;
+    padding: var(--spacing-md);
+  }
+  
+  .container {
+    padding: 0 var(--spacing-md);
+  }
+} 

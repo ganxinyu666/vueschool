@@ -1,0 +1,76 @@
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#app {
+  width: 100%;
+}
+
+// 禁用移动端特有的交互效果
+* {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+// 自定义滚动条样式
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+// 添加移动端基础样式
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+  
+  // 优化触摸区域
+  button, 
+  [role="button"],
+  .clickable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+// 添加移动端媒体查询断点
+$breakpoints: (
+  'sm': 576px,
+  'md': 768px,
+  'lg': 992px,
+  'xl': 1200px
+);
+
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media screen and (max-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+} 
+
+// 添加移动端缩放样式
+@media screen and (max-width: 768px) {
+  body {
+    transform: scale(0.5);
+    transform-origin: top left;
+    width: 200%; // 补偿缩放导致的宽度减少
+    height: 200%; // 补偿缩放导致的高度减少
+    overflow-x: hidden;
+  }
+}
