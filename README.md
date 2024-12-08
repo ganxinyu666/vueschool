@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-campus-showcase-front/
+# 1.项目目录结构
 
 ├── public/            # 静态资源文件夹 (不经过 webpack 处理)
 
@@ -185,8 +184,10 @@ campus-showcase-front/
 
 ├── package-lock.json
 
-└── README.md           # 项目说明文档
-=======
-# vuexiaoyuan
-基于vue的校园页面展示页面
->>>>>>> 39b0cd0ab8564d6afa0202e32d939a9963140215
+# 2.项目运行命令
+
+```bash\
+npm run serve
+```
+
+![image-20241208094738377](./../../../AppData/Roaming/Typora/typora-user-images/image-20241208094738377.png)
